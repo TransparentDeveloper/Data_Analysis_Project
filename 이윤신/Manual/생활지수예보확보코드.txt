@@ -1,0 +1,210 @@
+'''
+<R-studio 이용, 생활지수예보 데이터 확보 코드>
+
+1. 지수코드 
+- A03: 체감온도
+- A04: 동상가능지수
+- A05: 열지수
+- A06: 불쾌지수
+
+2. 최종 데이터
+- fct_life_[예보연도]_[지수코드]_aws : 방재기상관측(AWS)지점의 지점번호 로 매핑된 예보데이터 (2012 ~2014)
+- fct_life_[예보연도]_[지수코드]_fct : 동네예보구역의 행정구역코드 로 매핑된 예보데이터 (2013 ~2016)
+
+3. 테이블 import
+- 'AWS' 라는 테이블 명으로 '/HOME/Readme/AreaInfo' 에서 '방재기상관측(AWS)지점.csv' import (단, 시작시간, 종료시각은 skip)
+- 'FCT' 라는 테이블 명으로 '/HOME/Readme/AreaInfo' 에서 '동네예보구역.csv' import (단, '2단계', '3단계', '격자X', '격자Y', '경도', '위도' 는 skip)
+'''
+
+fct_life_2012_A03 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A03'
+				AND TM_FC LIKE '2012%' ")
+fct_life_2013_A03 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A03'
+				AND TM_FC LIKE '2013%' ")
+fct_life_2014_A03 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A03'
+				AND TM_FC LIKE '2014%' ")
+fct_life_2015_A03 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A03'
+				AND TM_FC LIKE '2015%' ")
+fct_life_2016_A03 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A03'
+				AND TM_FC LIKE '2016%' ")
+
+fct_life_2012_A03_aws <-  merge(fct_life_2012_A03, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2013_A03_aws <-  merge(fct_life_2013_A03, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2014_A03_aws <-  merge(fct_life_2014_A03, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2015_A03_aws <-  merge(fct_life_2015_A03, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2016_A03_aws <-  merge(fct_life_2016_A03, AWS, by.x = "stn_id",by.y="지점번호")
+
+fct_life_2012_A03_fct <-  merge(fct_life_2012_A03, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2013_A03_fct <-  merge(fct_life_2013_A03, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2014_A03_fct <-  merge(fct_life_2014_A03, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2015_A03_fct <-  merge(fct_life_2015_A03, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2016_A03_fct <-  merge(fct_life_2016_A03, FCT, by.x = "stn_id",by.y="행정구역코드")
+
+write.csv(fct_life_2012_A03_aws, 'fct_life_2012_A03_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2013_A03_aws, 'fct_life_2013_A03_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2014_A03_aws, 'fct_life_2014_A03_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2015_A03_aws, 'fct_life_2015_A03_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2016_A03_aws, 'fct_life_2016_A03_aws.csv', fileEncoding = 'cp949')
+
+write.csv(fct_life_2012_A03_fct, 'fct_life_2012_A03_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2013_A03_fct, 'fct_life_2013_A03_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2014_A03_fct, 'fct_life_2014_A03_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2015_A03_fct, 'fct_life_2015_A03_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2016_A03_fct, 'fct_life_2016_A03_fct.csv', fileEncoding = 'cp949')
+
+
+
+
+
+fct_life_2012_A04 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A04'
+				AND TM_FC LIKE '2012%' ")
+fct_life_2013_A04 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A04'
+				AND TM_FC LIKE '2013%' ")
+fct_life_2014_A04 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A04'
+				AND TM_FC LIKE '2014%' ")
+fct_life_2015_A04 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A04'
+				AND TM_FC LIKE '2015%' ")
+fct_life_2016_A04 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A04'
+				AND TM_FC LIKE '2016%' ")
+
+fct_life_2012_A04_aws <-  merge(fct_life_2012_A04, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2013_A04_aws <-  merge(fct_life_2013_A04, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2014_A04_aws <-  merge(fct_life_2014_A04, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2015_A04_aws <-  merge(fct_life_2015_A04, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2016_A04_aws <-  merge(fct_life_2016_A04, AWS, by.x = "stn_id",by.y="지점번호")
+
+fct_life_2012_A04_fct <-  merge(fct_life_2012_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2013_A04_fct <-  merge(fct_life_2013_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2014_A04_fct <-  merge(fct_life_2014_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2015_A04_fct <-  merge(fct_life_2015_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2016_A04_fct <-  merge(fct_life_2016_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+
+write.csv(fct_life_2012_A04_aws, 'fct_life_2012_A04_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2013_A04_aws, 'fct_life_2013_A04_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2014_A04_aws, 'fct_life_2014_A04_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2015_A04_aws, 'fct_life_2015_A04_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2016_A04_aws, 'fct_life_2016_A04_aws.csv', fileEncoding = 'cp949')
+
+write.csv(fct_life_2012_A04_fct, 'fct_life_2012_A04_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2013_A04_fct, 'fct_life_2013_A04_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2014_A04_fct, 'fct_life_2014_A04_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2015_A04_fct, 'fct_life_2015_A04_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2016_A04_fct, 'fct_life_2016_A04_fct.csv', fileEncoding = 'cp949')
+
+
+
+
+
+
+
+fct_life_2012_A05 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A05'
+				AND TM_FC LIKE '2012%' ")
+fct_life_2013_A05 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A05'
+				AND TM_FC LIKE '2013%' ")
+fct_life_2014_A05 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A05'
+				AND TM_FC LIKE '2014%' ")
+fct_life_2015_A05 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A05'
+				AND TM_FC LIKE '2015%' ")
+fct_life_2016_A05 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A05'
+				AND TM_FC LIKE '2016%' ")
+
+fct_life_2012_A05_aws <-  merge(fct_life_2012_A05, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2013_A05_aws <-  merge(fct_life_2013_A05, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2014_A05_aws <-  merge(fct_life_2014_A05, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2015_A05_aws <-  merge(fct_life_2015_A05, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2016_A05_aws <-  merge(fct_life_2016_A05, AWS, by.x = "stn_id",by.y="지점번호")
+
+fct_life_2012_A05_fct <-  merge(fct_life_2012_A05, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2013_A05_fct <-  merge(fct_life_2013_A05, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2014_A05_fct <-  merge(fct_life_2014_A05, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2015_A05_fct <-  merge(fct_life_2015_A05, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2016_A05_fct <-  merge(fct_life_2016_A05, FCT, by.x = "stn_id",by.y="행정구역코드")
+
+write.csv(fct_life_2012_A05_aws, 'fct_life_2012_A05_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2013_A05_aws, 'fct_life_2013_A05_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2014_A05_aws, 'fct_life_2014_A05_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2015_A05_aws, 'fct_life_2015_A05_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2016_A05_aws, 'fct_life_2016_A05_aws.csv', fileEncoding = 'cp949')
+
+write.csv(fct_life_2012_A05_fct, 'fct_life_2012_A05_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2013_A05_fct, 'fct_life_2013_A05_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2014_A05_fct, 'fct_life_2014_A05_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2015_A05_fct, 'fct_life_2015_A05_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2016_A05_fct, 'fct_life_2016_A05_fct.csv', fileEncoding = 'cp949')
+
+
+
+fct_life_2012_A06 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A06'
+				AND TM_FC LIKE '2012%' ")
+fct_life_2013_A06 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A06'
+				AND TM_FC LIKE '2013%' ")
+fct_life_2014_A06 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A06'
+				AND TM_FC LIKE '2014%' ")
+fct_life_2015_A06 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A06'
+				AND TM_FC LIKE '2015%' ")
+fct_life_2016_A06 <- dbGetQuery(conn, "SELECT TM_FC,IMI_CODE,STN_ID,T1,T2,T3
+				FROM FCT_IMI2_LIFE2 
+				WHERE IMI_CODE LIKE 'A06'
+				AND TM_FC LIKE '2016%' ")
+
+fct_life_2012_A06_aws <-  merge(fct_life_2012_A06, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2013_A06_aws <-  merge(fct_life_2013_A06, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2014_A06_aws <-  merge(fct_life_2014_A06, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2015_A06_aws <-  merge(fct_life_2015_A06, AWS, by.x = "stn_id",by.y="지점번호")
+fct_life_2016_A06_aws <-  merge(fct_life_2016_A06, AWS, by.x = "stn_id",by.y="지점번호")
+
+fct_life_2012_A06_fct <-  merge(fct_life_2012_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2013_A06_fct <-  merge(fct_life_2013_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2014_A06_fct <-  merge(fct_life_2014_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2015_A06_fct <-  merge(fct_life_2015_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+fct_life_2016_A06_fct <-  merge(fct_life_2016_A06, FCT, by.x = "stn_id",by.y="행정구역코드")
+
+write.csv(fct_life_2012_A06_aws, 'fct_life_2012_A06_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2013_A06_aws, 'fct_life_2013_A06_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2014_A06_aws, 'fct_life_2014_A06_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2015_A06_aws, 'fct_life_2015_A06_aws.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2016_A06_aws, 'fct_life_2016_A06_aws.csv', fileEncoding = 'cp949')
+
+write.csv(fct_life_2012_A06_fct, 'fct_life_2012_A06_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2013_A06_fct, 'fct_life_2013_A06_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2014_A06_fct, 'fct_life_2014_A06_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2015_A06_fct, 'fct_life_2015_A06_fct.csv', fileEncoding = 'cp949')
+write.csv(fct_life_2016_A06_fct, 'fct_life_2016_A06_fct.csv', fileEncoding = 'cp949')
+
